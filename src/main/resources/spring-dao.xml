@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+<context:property-placeholder location="classpath:mysql.properties"/>
+
+<!-- 配置数据源 -->
+<bean id="datasource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+<property name="driverClassName" value="${jdbc.driver}"/>
+<property name="url" value="${jdbc.url}" />
+<property name="username" value="${jdbc.username}" />
+<property name="password" value="${jdbc.password}" />
+
+<!-- 初始化池的连接 -->
+<property name="initialSize" value="5" />
+<!-- 最大空闲连接数 -->
+<property name="minIdle" value="1" />
+<!-- 最多连接数 -->
+<property name="maxActive" value="10" />
+<!-- 最大等待时间 -->
+<property name="maxWait" value="10000"/>
+<!-- 检查空闲连接的间隔时间 -->
+<property name="timeBetweenEvictionRunsMillis" value="60000" />
+<!-- 连接的最小生存时间 -->
+<property name="minEvictableIdleTimeMillis" value="30000" />
+
+<!-- 是否测试链接有效性 -->
+<property name="testOnBorrow" value="true" />
+<property name="testOnReturn" value="true" />
+<property name="testWhileIdle" value="true" />
+
+<property name="poolPreparedStatements" value="true" />
+<property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
+</bean>
+
+<!-- sqlSessionFactory -->
+<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+<property name="dataSource" ref="datasource"/>
+<property name="mapperLocations" value="classpath:mapper/*.xml"/>
+<property name="configLocation" value="classpath:mybatis-config.xml" />
+<property name="typeAliasesPackage" value="com.qg.bean" />
+</bean>
+<!-- 配置mybatis和spring整合动态代理dao -->
+<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+ <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+ <property name="basePackage" value="com.qg.dao" />
+</bean>
+</beans>

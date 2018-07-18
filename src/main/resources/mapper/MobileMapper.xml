@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qg.dao.MobileDao">
+	<insert id="saveCabbage">
+		INSERT INTO
+		mobile(id,mobile_number,mobile_area,
+		mobile_type,area_code,post_code) values(#{item.id},#{item.mobileNumber},#{item.mobileArea},
+			#{item.mobileType},#{item.areaCode},#{item.postCode})
+	</insert>
+
+	<!-- <insert id="saveMobileBatch" useGeneratedKeys="true"
+		parameterType="java.util.ArrayList">
+		INSERT INTO
+		mobile_copy(id,mobile_number,mobile_area,
+		mobile_type,area_code,post_code)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			values(#{item.id},#{item.mobileNumber},#{item.mobileArea},
+			#{item.mobileType},#{item.areaCode},#{item.postCode})
+		</foreach>
+	</insert> -->
+</mapper>
